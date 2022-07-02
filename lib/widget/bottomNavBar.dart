@@ -2,7 +2,7 @@ import 'package:crypto_app/pages/crypto_table.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
-import '../pages/user_wallet.dart';
+import '../pages/user.dart';
 
 
 bottomNavBar(BuildContext context){

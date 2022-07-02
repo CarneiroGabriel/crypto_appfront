@@ -1,4 +1,6 @@
+import 'package:crypto_app/Class/utils.dart';
 import 'package:crypto_app/currency_provider.dart';
+import 'package:crypto_app/pages/auth.dart';
 import 'package:crypto_app/pages/home.dart';
 import 'package:crypto_app/pages/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (context) => CurrencyProvider(),
     child: MaterialApp(
+      scaffoldMessengerKey: Utils.messengerKey,
       debugShowCheckedModeBanner: false,
       title: MyApp.title,
       theme: ThemeData.dark(),
@@ -37,10 +40,14 @@ class MainPage extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
-          if(snapshot.hasData){
+          if(snapshot.connectionState == ConnectionState!){
+            return Center(child: CircularProgressIndicator(),);
+          }else if(snapshot.hasError){
+            return Center(child: Text('Something has error'),);
+          }else if(snapshot.hasData){
             return HomePage();
-          }else {
-            return LoginPage();
+          }else{
+            return AuthPage();
           }
         }
       ),

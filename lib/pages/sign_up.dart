@@ -1,22 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../Class/utils.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.onClickedSingUp}) : super(key: key);
+class SingUpPage extends StatefulWidget {
+  const SingUpPage({Key? key, required this.onClickedSingUp}) : super(key: key);
 
   final VoidCallback onClickedSingUp;
 
-
-
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SingUpPage> createState() => _SingUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SingUpPageState extends State<SingUpPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -36,7 +33,10 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 40),
-          Image(image: AssetImage("asset/logos/logo.png"), height: 225),
+          Image(
+            image: AssetImage("asset/logos/logo.png"),
+            height: 225,
+          ),
           SizedBox(height: 40),
           TextField(
             controller: emailController,
@@ -62,47 +62,52 @@ class _LoginPageState extends State<LoginPage> {
                 labelText: "Password",
                 labelStyle: TextStyle(color: Colors.white)),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size.fromHeight(50)
+            style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
+            icon: Icon(
+              Icons.lock_open,
+              size: 32,
             ),
-            icon: Icon(Icons.login, size: 32,),
-            label: Text("Sign In"),
-            onPressed: singIn,
+            label: Text("Sign Up"),
+            onPressed: singUp,
           ),
-          SizedBox(height: 24,),
-          RichText(text: TextSpan(
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-            ),
-            text: "No account ? ",
-            children: [
-              TextSpan(
-                recognizer: TapGestureRecognizer()
-                  ..onTap = widget.onClickedSingUp,
-                text: "Sign Up",
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Theme.of(context).colorScheme.secondary,
-                )
+          SizedBox(
+            height: 24,
+          ),
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
               ),
-            ],
-          ),
+              text: "Already have account? ",
+              children: [
+                TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = widget.onClickedSingUp,
+                    text: "Log in",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Theme.of(context).colorScheme.secondary,
+                    )),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Future singIn() async {
+  Future singUp() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-    }on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       print(e);
 
       Utils.showSnackBar(e.message);
