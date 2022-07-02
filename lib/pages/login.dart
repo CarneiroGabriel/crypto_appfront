@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
               minimumSize: Size.fromHeight(50)
             ),
             icon: Icon(Icons.login, size: 32,),
-            label: Text("Sign In"),
+            label: Text("Log In"),
             onPressed: singIn,
           ),
           SizedBox(height: 24,),

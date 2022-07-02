@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../Class/utils.dart';
 import '../main.dart';
 
 class EditUserPage extends StatefulWidget {
@@ -13,8 +14,6 @@ class EditUserPage extends StatefulWidget {
 class _EditUserPageState extends State<EditUserPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +62,14 @@ class _EditUserPageState extends State<EditUserPage> {
               ),
               label: Text("Change User Data"),
               onPressed: (){
+                try {
+                  FirebaseAuth.instance.currentUser?.updateEmail(emailController.text.trim());
+                  FirebaseAuth.instance.currentUser?.updatePassword(passwordController.text.trim());
+                } on FirebaseAuthException catch (e) {
+                  print(e);
+                  Utils.showSnackBar(e.message);
+                }
 
-                AuthCredential credential = EmailAuthProvider.credential(email: emailController.text.trim(), password: passwordController.text.trim());
-
-
-                FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credential);
 
                 Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
               },

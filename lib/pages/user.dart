@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../widget/bottomNavBar.dart';
 import 'edit_user_page.dart';
+import 'extra_info.dart';
 
 class UserArea extends StatelessWidget {
   const UserArea({Key? key}) : super(key: key);
@@ -56,34 +57,35 @@ class UserArea extends StatelessWidget {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text("Delete Account"),
-                    content: Text("Are you sure to Delete your Account ?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: TextButton.styleFrom(
-                          primary: Color(0xff00d7f3),
-                        ),
-                        child: Text("Cancel"),
+                  builder: (context) =>
+                      AlertDialog(
+                        title: Text("Delete Account"),
+                        content: Text("Are you sure to Delete your Account ?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            style: TextButton.styleFrom(
+                              primary: Color(0xff00d7f3),
+                            ),
+                            child: Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              FirebaseAuth.instance.currentUser!.delete();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MainPage()));
+                            },
+                            style: TextButton.styleFrom(
+                              primary: Colors.red,
+                            ),
+                            child: Text("Delete Account"),
+                          )
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          FirebaseAuth.instance.currentUser!.delete();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MainPage()));
-                        },
-                        style: TextButton.styleFrom(
-                          primary: Colors.red,
-                        ),
-                        child: Text("Delete Account"),
-                      )
-                    ],
-                  ),
                 );
               },
               icon: Icon(Icons.delete_outline),
@@ -96,8 +98,8 @@ class UserArea extends StatelessWidget {
               height: 40,
             ),
             ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(40), primary: Colors.amber),
+              style: ElevatedButton.styleFrom(
+                  minimumSize: Size.fromHeight(40), primary: Colors.amber),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => EditUserPage()));
@@ -105,6 +107,20 @@ class UserArea extends StatelessWidget {
               icon: Icon(Icons.manage_accounts),
               label: Text(
                 "Edit your account",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            SizedBox(height: 40,),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: Size.fromHeight(40), primary: Colors.green),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ExtraInfo()));
+              },
+              icon: Icon(Icons.info_outline),
+              label: Text(
+                "put extra infos",
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -117,6 +133,4 @@ class UserArea extends StatelessWidget {
       bottomNavigationBar: bottomNavBar(context),
     );
   }
-
-  void DeleteAccount() {}
 }

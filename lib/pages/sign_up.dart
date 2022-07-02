@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../Class/user_class.dart';
 import '../Class/utils.dart';
 
 class SingUpPage extends StatefulWidget {
@@ -16,6 +19,8 @@ class SingUpPage extends StatefulWidget {
 class _SingUpPageState extends State<SingUpPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+
 
   @override
   void dispose() {
@@ -35,7 +40,7 @@ class _SingUpPageState extends State<SingUpPage> {
           SizedBox(height: 40),
           Image(
             image: AssetImage("asset/logos/logo.png"),
-            height: 225,
+            height: 170,
           ),
           SizedBox(height: 40),
           TextField(
@@ -63,7 +68,7 @@ class _SingUpPageState extends State<SingUpPage> {
                 labelStyle: TextStyle(color: Colors.white)),
           ),
           SizedBox(
-            height: 20,
+            height: 16,
           ),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
@@ -72,11 +77,9 @@ class _SingUpPageState extends State<SingUpPage> {
               size: 32,
             ),
             label: Text("Sign Up"),
-            onPressed: singUp,
+            onPressed:singUp,
           ),
-          SizedBox(
-            height: 24,
-          ),
+
           RichText(
             text: TextSpan(
               style: TextStyle(
@@ -92,7 +95,8 @@ class _SingUpPageState extends State<SingUpPage> {
                     style: TextStyle(
                       decoration: TextDecoration.underline,
                       color: Theme.of(context).colorScheme.secondary,
-                    )),
+                    ),
+                ),
               ],
             ),
           ),
@@ -101,15 +105,14 @@ class _SingUpPageState extends State<SingUpPage> {
     );
   }
 
-  Future singUp() async {
+  Future singUp() async{
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
       print(e);
-
       Utils.showSnackBar(e.message);
     }
   }
