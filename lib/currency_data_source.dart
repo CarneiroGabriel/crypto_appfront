@@ -84,7 +84,7 @@ class CurrencyDataSource extends DataGridSource {
     return Container(
       padding: EdgeInsets.all(16),
       child: Text(
-        "\$${price}",
+        "R\$${price}",
         style: TextStyle(color: Colors.tealAccent),
       ),
     );
@@ -114,7 +114,7 @@ class CurrencyDataSource extends DataGridSource {
     return Container(
       padding: EdgeInsets.all(16),
       child: Text(
-        "\$${price}",
+        "R\$${price}",
         style: TextStyle(color: Colors.tealAccent),
       ),
     );
