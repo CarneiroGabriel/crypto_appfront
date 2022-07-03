@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import '../Class/user_class.dart';
 import '../widget/bottomNavBar.dart';
+import 'bth.dart';
+import 'eth.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,13 +13,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: _body(),
+        child: _body(context),
       ),
       bottomNavigationBar: bottomNavBar(context),
     );
   }
 
-  _body() {
+  _body(BuildContext context) {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -28,7 +29,10 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               InkWell(
-                onTap: () {}, // Handle your callback.
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Bth()));
+                }, // Handle your callback.
                 borderRadius: BorderRadius.circular(16),
                 child: Ink(
                   height: 125,
@@ -44,7 +48,10 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () {}, // Handle your callback.
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Eth()));
+                }, // Handle your callback.
                 borderRadius: BorderRadius.circular(20),
                 child: Ink(
                   height: 125,

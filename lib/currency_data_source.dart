@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'Class/coins.dart';
 import 'currency.dart';
 
 enum CurrencyColumn { id, rank, name, price, oneHChange, oneDChange, marketCap }
 
 class CurrencyDataSource extends DataGridSource {
+  int control = 0;
   late List<DataGridRow> _currencies;
 
   @override
@@ -38,6 +41,28 @@ class CurrencyDataSource extends DataGridSource {
         final column = CurrencyColumn.values
             .firstWhere((value) => value.toString() == dataGridCell.columnName);
         print("build|Row ");
+
+        if(currency.id == "BTC"){
+          control++;
+          print(control);
+          if(control == 6){
+            final btc = Coins( price: currency.price, when: DateTime.now());
+
+            createBTC(btc);
+            control =0;
+          }
+        }
+
+        if(currency.id == "ETH"){
+          control++;
+          print(control);
+          if(control == 6){
+            final eth = Coins( price: currency.price, when: DateTime.now());
+
+            createETH(eth);
+            control =0;
+          }
+        }
 
         switch (column) {
           case CurrencyColumn.id:
@@ -172,5 +197,27 @@ class CurrencyDataSource extends DataGridSource {
           ? SvgPicture.network(currency.logoUrl)
           : Image.network(currency.logoUrl),
     );
+  }
+
+  void createBTC(Coins coin){
+    //reference the document
+    final docUser = FirebaseFirestore.instance.collection("BTC").doc();
+    coin.id = docUser.id;
+
+    final json = coin.toJson();
+
+    //create doc and write on firebase
+    docUser.set(json);
+  }
+
+  void createETH(Coins coin){
+    //reference the document
+    final docUser = FirebaseFirestore.instance.collection("ETH").doc();
+    coin.id = docUser.id;
+
+    final json = coin.toJson();
+
+    //create doc and write on firebase
+    docUser.set(json);
   }
 }
