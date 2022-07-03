@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
    <application
-        android:label="crypto_app"
+        android:label="Crypto app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
