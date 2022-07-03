@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import '../Class/user_class.dart';
 import '../widget/bottomNavBar.dart';
 
 class HomePage extends StatelessWidget {
@@ -19,14 +23,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(
-            "Bem vindo User_Name",
-            style: TextStyle(
-              fontSize: 26,
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          readUser(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -96,5 +93,27 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+  readUser(){
+     return FutureBuilder<UserBD?>(
+      future: readUserInfo(),
+      builder: (context, snapshot){
+        if(snapshot.hasData){
+          final user = snapshot.data;
+          return Text("Well Come ${user!.name}", style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600),);
+        }else{
+          return Text("Well Come",style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600));
+        }
+      },
+    );
+  }
+
+  Future<UserBD?> readUserInfo() async{
+    final docUser = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid);
+    final snapshot = await docUser.get();
+
+    if(snapshot.exists){
+      return UserBD.fromJson(snapshot.data()!);
+    }
   }
 }
